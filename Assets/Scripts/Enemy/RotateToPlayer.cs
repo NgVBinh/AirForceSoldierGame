@@ -6,7 +6,6 @@ public class RotateToPlayer : MonoBehaviour
 {
     [SerializeField] private Transform playerTransform;
     [SerializeField] private float inRange;
-    [SerializeField] private float SpeedRotate;
 
     // Update is called once per frame
     void Update()

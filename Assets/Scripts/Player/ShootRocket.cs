@@ -34,7 +34,7 @@ public class ShootRocket : MonoBehaviour
             
             Debug.DrawLine(transform.position, shootHit.point, Color.red);
             Vector3 target = shootHit.collider.transform.position;
-            Debug.Log(target);
+            //Debug.Log(target);
 
             targetPos = target;
             shoot();
