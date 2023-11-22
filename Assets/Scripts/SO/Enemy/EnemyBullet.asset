@@ -15,6 +15,5 @@ MonoBehaviour:
   enemyID: 1
   hp: 100
   damageBullet: 2
-  rangeBullet: 500
+  rangeAttack: 500
   damageRocket: 0
-  rangeRocket: 0

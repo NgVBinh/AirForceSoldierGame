@@ -6,52 +6,64 @@ using UnityEngine;
 public class PlayerSO : ScriptableObject
 {
     public float hp;
+    public float maxSpeed;
     public float damageBullet;
-    public float rangeBullet;
+    public float timeBullet;
     public float damageRocket;
-    public float rangeRocket;
+    public float timeRocket;
 
     public float GetHp()
     {
         return hp;
     }
+
+    public float GetMaxSpeed()
+    {
+        return maxSpeed;
+    }
+
     public float GetDamageBullet()
     {
         return damageBullet;
     }
 
-    public float GetRangeBullet()
+    public float GetTimeBullet()
     {
-        return rangeBullet;
+        return timeBullet;
     }
     public float GetDamageRocket()
     {
         return damageRocket;
     }
-    public float GetRangeRocket()
+    public float GetTimeRocket()
     {
-        return rangeRocket;
+        return timeRocket;
     }
 
+    // set infor
     public void SetHp(float value)
     {
         hp = value;
     }
 
+    public void SetMaxSpeed(float value)
+    {
+        maxSpeed = value;
+    }
     public void SetDamageBullet(float value)
     {
         damageBullet = value;
     }
-    public void SetRangeBullet(float value)
+    public void SetTimeBullet(float value)
     {
-        rangeBullet = value;
+        timeBullet = value;
     }
     public void SetDamageRocket(float value)
     {
         damageRocket = value;
     }
-    public void SetRangeRocket(float value)
+    public void SetTimeRocket(float value)
     {
-        rangeRocket = value;
+        timeRocket = value;
     }
 }

@@ -1,76 +1,96 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float Speed;
+    private float Speed;
     [SerializeField] private float SpeedRotate;
+    private PlayerManager playerManager;
     private Rigidbody rb;
 
     private Vector3 anglePlayer;
-    private bool flyPlane;
 
     float horizontal, vertical;
 
-    Quaternion rotation;
     // Start is called before the first frame update
     void Start()
     {
+        Speed = 3f;
+       
         rb = GetComponent<Rigidbody>();
-
+        playerManager = GetComponentInChildren<PlayerManager>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         horizontal = Input.GetAxisRaw(Axis.HORIZONTAL_AXIS);
         vertical = Input.GetAxisRaw(Axis.VERTICAL_AXIS);
 
-       // anglePlayer = transform.eulerAngles;
-        RotateAnglePlayer();
-        
-    }
-
-    private void FixedUpdate()
-    {
-        PlayerMove();
-    }
-    public void PlayerMove()
-    {
-        // di chuyển player
-        if (Input.GetKey(KeyCode.P))
+        if (!playerManager.GetPlayerDie() && !GameManager.Instance.isWin)
         {
-            flyPlane = true;
+            PlayerMove();
+            RotateAnglePlayer();
         }
 
-        if(flyPlane )
+    }
+
+    public void PlayerMove()
+    {
+        if (Input.GetKey(KeyCode.Q) && Speed < playerManager.playerInfor.GetMaxSpeed())
+        {
+            Speed += Time.deltaTime*4f;
+        }
+        if (Input.GetKey(KeyCode.E) && Speed >5f)
+        {
+            Speed -= Time.deltaTime * 4f;
+        }
+
+        if (Speed != 0)
         {
             transform.position += transform.forward * Speed * Time.deltaTime;
         }
-
     }
 
     public void RotateAnglePlayer()
     {
-        rotation= transform.rotation;   
         anglePlayer = transform.eulerAngles;
-        // quay player
-        if (horizontal != 0 )
+        // quay player theo horizontal
+        if (horizontal != 0)
         {
-            anglePlayer.z -=horizontal* SpeedRotate * Time.deltaTime;
-            anglePlayer.y +=horizontal* SpeedRotate * Time.deltaTime;
-            rotation = Quaternion.Euler(anglePlayer);
+            // Chuyển đổi giá trị góc về khoảng -180 đến 180 độ
+            anglePlayer.z = (anglePlayer.z > 180) ? anglePlayer.z - 360 : anglePlayer.z;
+            if (anglePlayer.z >= -70f && anglePlayer.z <= 70f )
+            {
+                anglePlayer.z -= horizontal * SpeedRotate * Time.deltaTime;
+            }
+            else if (anglePlayer.z < -70f)
+            {
+                anglePlayer.z = -70f;
+            } 
+            else if (anglePlayer.z > 70f)     
+            {
+                anglePlayer.z = 70f;
+            }
+
+            //quay trục y player
+            anglePlayer.y += horizontal * SpeedRotate * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(anglePlayer);
+
         }
 
         if (vertical != 0)
         {
-            anglePlayer.x -=vertical* SpeedRotate * Time.deltaTime;
-            rotation = Quaternion.Euler(anglePlayer);
-
+            anglePlayer.x -= vertical * SpeedRotate * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(anglePlayer);
         }
-        transform.rotation = rotation;
+    }
+    public float GetSpeed()
+    {
+        return this.Speed;
     }
 
 }

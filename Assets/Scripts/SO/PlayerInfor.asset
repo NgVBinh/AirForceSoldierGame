@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4987645809c7d24b805860506f1b2de, type: 3}
   m_Name: PlayerInfor
   m_EditorClassIdentifier: 
-  hp: 100
-  damageBullet: 10
-  rangeBullet: 500
-  damageRocket: 50
-  rangeRocket: 700
+  hp: 300
+  maxSpeed: 35
+  damageBullet: 3
+  timeBullet: 0.3
+  damageRocket: 55
+  timeRocket: 5

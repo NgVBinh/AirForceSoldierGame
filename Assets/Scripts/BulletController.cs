@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
-   
+
     [SerializeField] private float speed;
     private float damageBullet;
-    private Vector3 direction= Vector3.forward;
+    private Vector3 direction = Vector3.forward;
 
     public void SetDirection(Vector3 direction)
     {
@@ -25,8 +25,19 @@ public class BulletController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(direction* Time.deltaTime* speed);
+        transform.Translate(direction * Time.deltaTime * speed);
     }
 
-    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Terrain"))
+        {
+            Vector3 hitPoint = other.ClosestPointOnBounds(transform.position);
+            if (hitPoint != Vector3.zero)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+    }
+
 }

@@ -9,9 +9,8 @@ public class EnemySO : ScriptableObject
     
     public float hp;   
     public float damageBullet;
-    public float rangeBullet;
+    public float rangeAttack;
     public float damageRocket;
-    public float rangeRocket;
 
     public string GetEnemyID()
     {
@@ -26,17 +25,13 @@ public class EnemySO : ScriptableObject
         return damageBullet;
     }
 
-    public float GetRangeBullet()
+    public float GetRangeAttack()
     {
-        return rangeBullet;
+        return rangeAttack;
     }
     public float GetDamageRocket()
     {
         return damageRocket;
-    }
-    public float GetRangeRocket()
-    {
-        return rangeRocket;
     }
 
     public void SetHp(float value)
@@ -48,16 +43,13 @@ public class EnemySO : ScriptableObject
     {
         damageBullet = value;
     }
-    public void SetRangeBullet(float value)
+    public void SetRangeAttack(float value)
     {
-        rangeBullet = value;
+        rangeAttack = value;
     }
     public void SetDamageRocket(float value)
     {
         damageRocket = value;
     }
-    public void SetRangeRocket(float value)
-    {
-        rangeRocket = value;
-    }
+
 }

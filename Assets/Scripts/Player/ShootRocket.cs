@@ -1,54 +1,61 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ShootRocket : MonoBehaviour
 {
-    [SerializeField] GameObject rocketPrefabs;
-    public float speed;
-    //rocket
-    Ray shootRay;
-    RaycastHit shootHit;
-    private int shootableLayerMask;
-    private float range = 700f;
+    [SerializeField] private GameObject rocketPrefabs;
+    [SerializeField] private Transform attackPoint;
 
+    private PlayerManager playerManager;
+    private Transform playerDirection;
+    private float timeToShoot;
+    private float timer;
     private Vector3 targetPos;
     // Start is called before the first frame update
     void Start()
     {
-        shootableLayerMask = LayerMask.GetMask("Shootable");
+        timeToShoot = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>().playerInfor.GetTimeRocket();
+        playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        playerDirection = GameObject.Find("Player").GetComponent<Transform>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        ShootRockets();
+        shoot();
     }
 
-    public void ShootRockets()
-    {
-        shootRay.origin = transform.position;
-        shootRay.direction = transform.forward;
-        if (Physics.Raycast(shootRay, out shootHit, range, shootableLayerMask))
-        {
-            
-            Debug.DrawLine(transform.position, shootHit.point, Color.red);
-            Vector3 target = shootHit.collider.transform.position;
-            //Debug.Log(target);
-
-            targetPos = target;
-            shoot();
-        }
-    }
 
     public void shoot()
     {
-        if (Input.GetButtonDown("Fire2"))
+        timer += Time.deltaTime;
+        if (Input.GetButtonDown("Fire2") &&  timer>= timeToShoot)
         {
-            GameObject newRock= Instantiate(rocketPrefabs,transform.position,transform.rotation);
-            RocketController rocketController = newRock.GetComponent<RocketController>();
+            GameObject newRock= Instantiate(rocketPrefabs,attackPoint.position,playerDirection.rotation);
+            RocketController rocketController = newRock.GetComponentInChildren<RocketController>();
+            rocketController.SetDamageRocket(playerManager.playerInfor.GetDamageRocket());
             rocketController.setTargetTransform(targetPos);
 
+            timer = 0f;
+        }
+    }
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+
+            //Debug.Log(other.gameObject.name + "trong pham vi ban ten lua");
+            targetPos = other.transform.position;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            targetPos = Vector3.zero;
         }
     }
 }
